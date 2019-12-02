@@ -4,21 +4,21 @@ import sys
 import unittest
 
 
-# This is a template file for Advent of Code 2019. It handles basic input and reading files,
-# as well as providing a usage string and unit tests.
+# Starting out easy, huh?
 
-USAGE_MESSAGE = '''This is a template file. Please copy for individual problems for the 2019 Advent of Code.'''
+USAGE_MESSAGE = '''Problem 1a. Please give the name to a file with a list of masses, one per line.'''
 
 
 #-------------------------------------------BEGIN SOLUTION CODE------------------------------------------------
 
 
 def main():
-	# Write main code here.
-	return None
+	print(sum(map(fuel_from_mass, get_input_file_numbers())))
 
 
 # Other functions can be defined here.
+def fuel_from_mass(mass):
+	return mass // 3 - 2
 
 
 #--------------------------------------------END SOLUTION CODE-------------------------------------------------
@@ -32,8 +32,11 @@ class TestMethods(unittest.TestCase):
 
 
 	# Define testing functions here.
-	def test_trivial(self):
-		self.assertTrue(True)
+	def test_fuel_from_mass(self):
+		self.assertEqual(fuel_from_mass(12), 2)
+		self.assertEqual(fuel_from_mass(14), 2)
+		self.assertEqual(fuel_from_mass(1969), 654)
+		self.assertEqual(fuel_from_mass(100756), 33583)
 
 
 	# Test cleanup

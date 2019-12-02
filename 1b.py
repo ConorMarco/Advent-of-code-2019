@@ -4,22 +4,29 @@ import sys
 import unittest
 
 
-# This is a template file for Advent of Code 2019. It handles basic input and reading files,
-# as well as providing a usage string and unit tests.
+# Starting out easy, huh?
 
-USAGE_MESSAGE = '''This is a template file. Please copy for individual problems for the 2019 Advent of Code.'''
+USAGE_MESSAGE = '''Problem 1b. Please give the name to a file with a list of masses, one per line.'''
 
 
 #-------------------------------------------BEGIN SOLUTION CODE------------------------------------------------
 
 
 def main():
-	# Write main code here.
-	return None
+	print(sum(map(fuel_from_mass_recursive, get_input_file_numbers())))
 
 
 # Other functions can be defined here.
+def fuel_from_mass(mass):
+	return mass // 3 - 2
 
+def fuel_from_mass_recursive(mass):
+	additional_fuel = fuel_from_mass(mass)
+
+	if additional_fuel <= 0:
+		return 0
+	else:
+		return additional_fuel + fuel_from_mass_recursive(additional_fuel)
 
 #--------------------------------------------END SOLUTION CODE-------------------------------------------------
 #---------------------------------------------BEGIN TEST CODE--------------------------------------------------
@@ -32,8 +39,16 @@ class TestMethods(unittest.TestCase):
 
 
 	# Define testing functions here.
-	def test_trivial(self):
-		self.assertTrue(True)
+	def test_fuel_from_mass(self):
+		self.assertEqual(fuel_from_mass(12), 2)
+		self.assertEqual(fuel_from_mass(14), 2)
+		self.assertEqual(fuel_from_mass(1969), 654)
+		self.assertEqual(fuel_from_mass(100756), 33583)
+
+	def test_fuel_from_mass_recursive(self):
+		self.assertEqual(fuel_from_mass_recursive(14), 2)
+		self.assertEqual(fuel_from_mass_recursive(1969), 966)
+		self.assertEqual(fuel_from_mass_recursive(100756), 50346)
 
 
 	# Test cleanup

@@ -2,12 +2,21 @@
 
 import sys
 import unittest
+import argparse
+import functools
+import itertools
+import operator
 
 
 # This is a template file for Advent of Code 2019. It handles basic input and reading files,
 # as well as providing a usage string and unit tests.
 
-USAGE_MESSAGE = '''This is a template file. Please copy for individual problems for the 2019 Advent of Code.'''
+#------------------------------------------------ARGUMENTS-----------------------------------------------------
+
+parser = argparse.ArgumentParser(description="This is a template file. Please copy for individual problems for the 2019 Advent of Code.")
+
+# Uncomment this lne for file input
+# parser.add_argument("file", help="An intcode file consisting of integers separated by commas.")
 
 
 #-------------------------------------------BEGIN SOLUTION CODE------------------------------------------------
@@ -43,20 +52,10 @@ class TestMethods(unittest.TestCase):
 
 #----------------------------------------------END TEST CODE---------------------------------------------------
 
-# Input methods:
-
-# Make sure at least one command line argument was given for the various input functions.
-def get_first_argument():
-	if len(sys.argv) < 2:
-		print("An argument is required, but none was given.")
-		print_usage
-		exit()
-	else:
-		return sys.argv[1]
 
 # Read a filename in from arguments and give the contents of the file as a list of lines
 def get_input_file():
-	filename = get_first_argument()
+	filename = args.file
 	try:
 		file = open(filename, 'r')
 		return file.readlines()
@@ -64,25 +63,23 @@ def get_input_file():
 		print("There has been a file reading error with file " + filename + ":")
 		exit()
 
-def get_input_file_numbers():
-	return map(int, get_input_file())
+def get_input_file_numbers(delimeter=','):
+	list_of_lists = list(map(lambda x: x.split(delimeter), get_input_file()))
+	return list(map(int, functools.reduce(operator.iconcat, list_of_lists, [])))
 
-def get_input_string():
-	return get_first_argument()
-
-def get_input_int():
-	return int(get_first_argument())
-
+def print_result(message, part):
+	if not args.part or args.part == part:
+		print("Part " + str(part) + ": " + str(message))
 
 
-def print_usage():
-	print("Usage: " + USAGE_MESSAGE)
 
+parser.add_argument("-t", "--test", help="run all tests", action="store_true")
+parser.add_argument("-p", "--part", help="only print results for the given part", type=int, choices=[1, 2])
 
-if len(sys.argv) > 1 and sys.argv[1] == "-h":
-	print_usage()
-elif len(sys.argv) > 1 and sys.argv[1] == "-t":
+# Hack to get around positional arguments still being required even for test runs:
+if "-t" in sys.argv or "--test" in sys.argv:
 	# Remove command line arguments for test run
 	unittest.main(argv = [sys.argv[0]])
 else:
+	args = parser.parse_args()
 	main()

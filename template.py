@@ -45,29 +45,40 @@ class TestMethods(unittest.TestCase):
 
 # Input methods:
 
+# Make sure at least one command line argument was given for the various input functions.
+def get_first_argument():
+	if len(sys.argv) < 2:
+		print("An argument is required, but none was given.")
+		print_usage
+		exit()
+	else:
+		return sys.argv[1]
+
 # Read a filename in from arguments and give the contents of the file as a list of lines
 def get_input_file():
-	filename = sys.argv[1]
-
-
-	# else:
-	# 	print("There has been a file reading error with file " + filename + ":")
-	# 	print(error)
+	filename = get_first_argument()
+	try:
+		file = open(filename, 'r')
+		return file.readlines()
+	except:
+		print("There has been a file reading error with file " + filename + ":")
+		exit()
 
 def get_input_string():
-	return sys.argv[1]
+	return get_first_argument()
 
 def get_input_int():
-	return int(sys.argv[1])
+	return int(get_first_argument())
+
 
 
 def print_usage():
-	print(USAGE_MESSAGE)
+	print("Usage: " + USAGE_MESSAGE)
 
 
-if len(sys.argv) == 1 or sys.argv[1] == "-h":
+if len(sys.argv) > 1 and sys.argv[1] == "-h":
 	print_usage()
-elif sys.argv[1] == "-t":
+elif len(sys.argv) > 1 and sys.argv[1] == "-t":
 	# Remove command line arguments for test run
 	unittest.main(argv = [sys.argv[0]])
 else:

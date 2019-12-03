@@ -14,10 +14,10 @@ import math
 
 #------------------------------------------------ARGUMENTS-----------------------------------------------------
 
-parser = argparse.ArgumentParser(description="Hi Cole")
+parser = argparse.ArgumentParser(description="Day 3 of Advent of Code 2019")
 
 # Uncomment this lne for file input
-parser.add_argument("file", help="An intcode file consisting of integers separated by commas.")
+parser.add_argument("file", help="a file containing two lines of comma-separated wire segment descriptions.")
 
 
 #-------------------------------------------BEGIN SOLUTION CODE------------------------------------------------

@@ -63,9 +63,12 @@ def get_input_file():
 		print("There has been a file reading error with file " + filename + ":")
 		exit()
 
-def get_input_file_numbers(delimeter=','):
+def tokenize_input_file(delimeter=','):
 	list_of_lists = list(map(lambda x: x.split(delimeter), get_input_file()))
-	return list(map(int, functools.reduce(operator.iconcat, list_of_lists, [])))
+	return functools.reduce(operator.iconcat, list_of_lists, [])
+
+def get_input_file_numbers(delimeter=','):
+	return list(map(int, tokenize_input_file(delimeter)))
 
 def print_result(message, part):
 	if not args.part or args.part == part:

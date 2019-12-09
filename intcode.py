@@ -3,6 +3,8 @@ import operator
 import sys
 import functools
 
+from queue import Queue
+
 
 # ----------------- IO Handlers -----------------------------------------------------------------
 
@@ -23,7 +25,7 @@ class TerminalIoHandler:
 
 
 class QueueIoHandler:
-	def __init__(self, in_queue, out_queue):
+	def __init__(self, in_queue=Queue(), out_queue=Queue()):
 		self.in_queue = in_queue
 		self.out_queue = out_queue	
 

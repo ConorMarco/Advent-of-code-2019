@@ -25,9 +25,9 @@ class TerminalIoHandler:
 
 
 class QueueIoHandler:
-	def __init__(self, in_queue=Queue(), out_queue=Queue()):
-		self.in_queue = in_queue
-		self.out_queue = out_queue	
+	def __init__(self, in_queue=None, out_queue=None):
+		self.in_queue = in_queue if in_queue else Queue()
+		self.out_queue = out_queue if out_queue else Queue()
 
 	def get_input(self):
 		return self.in_queue.get()
@@ -87,7 +87,7 @@ class IntcodeComputer:
 		if addr >= len(self.code):
 			self.code += [0] * (addr - len(self.code) + 1)
 
-		if write:
+		if write != None:
 			self.code[addr] = write
 		else:
 			return self.code[addr]
@@ -119,7 +119,7 @@ class IntcodeComputer:
 
 	# If a function takes two inouts and one output, write it more easily with this
 	def intcode_standard_instr(self, a, b, out, f):
-		result = f(self.memory_get(a), self.memory_get(b))
+		result = int(f(self.memory_get(a), self.memory_get(b)))
 		self.memory_set(out, result)
 
 	def intcode_add(self, a, b, out):

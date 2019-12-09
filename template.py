@@ -72,8 +72,12 @@ def get_input_file_tokens(delimeter=','):
 def get_input_file_numbers(delimeter=','):
 	return list(map(int, get_input_file_tokens(delimeter)))
 
+
+def should_show_part(part):
+	return not args.part or args.part == part
+
 def print_result(message, part):
-	if not args.part or args.part == part:
+	if should_show_part(part):
 		print("Part " + str(part) + ": " + str(message))
 
 

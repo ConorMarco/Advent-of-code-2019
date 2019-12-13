@@ -25,10 +25,18 @@ parser.add_argument("file", help="An intcode file consisting of integers separat
 
 def main():
 	code = get_input_file_numbers()
-
-	comp = IntcodeComputer(code.copy(), TerminalIoHandler())
+	comp = IntcodeComputer(code)
 	comp.run_intcode()
 
+	# Part 1
+	if should_show_part(1):
+		_,outputs = run_intcode_statically(code, [1])
+		print_result(outputs[0], 1)
+
+	# Part 2
+	if should_show_part(2):
+		_,outputs = run_intcode_statically(code, [2])
+		print_result(outputs[0], 2)
 
 # Other functions can be defined here.
 

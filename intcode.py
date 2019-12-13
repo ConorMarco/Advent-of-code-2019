@@ -3,7 +3,7 @@ import operator
 import sys
 import functools
 
-from queue import Queue
+from queue import Queue, deque
 
 
 # ----------------- IO Handlers -----------------------------------------------------------------
@@ -172,13 +172,27 @@ class IntcodeComputer:
 
 
 
-# Directly run an intcode program from the command line -------------------------------------------------------
-def get_file_tokens(filename):
-	file = open(filename, 'r')
-	nested_tokens = list(map(lambda x: x.split(','),file.readlines()))
-	return functools.reduce(operator.iconcat, nested_tokens, [])
+# ----------------- Convenience Functions -----------------------------------------------------------------
 
+# Runs code with the given inputs list, and outputs the outputs list and the modified code
+def run_intcode_statically(code, inputs):
+	in_queue = Queue()
+	in_queue.queue = deque(code)
+
+	out_queue = Queue()
+	io_handler = QueueIoHandler(in_queue, out_queue)
+	comp = IntcodeComputer(code.copy(), io_handler)
+	code_results = comp.run_intcode()
+	return code_results, out_queue.queue
+
+
+
+# Directly run an intcode program from the command line -------------------------------------------------------
 if __name__ == "__main__":
-	code = list(map(int, get_file_tokens(sys.argv[1])))
+	file = open(sys.argv[1], 'r')
+	nested_tokens = list(map(lambda x: x.split(','),file.readlines()))
+	tokens = functools.reduce(operator.iconcat, nested_tokens, [])
+
+	code = list(map(int, tokens))
 	comp = IntcodeComputer(code)
 	comp.run_intcode()

@@ -33,8 +33,9 @@ def main():
 	winner = create_asteroid_destroy_list(station, grid)[PART_2_INDEX]
 	print_result(winner[0] * 100 + winner[1], 2)
 
-	pretty_print(create_asteroid_destroy_list(station, grid), station, grid)
 
+
+# Convenience method to print the order that asteroids will be destroyed in in visual format
 def pretty_print(order, station, grid):
 	chars = [['    '] * len(grid[0]) for _ in range(len(grid))]
 
@@ -47,11 +48,13 @@ def pretty_print(order, station, grid):
 		print(functools.reduce(operator.iconcat, line, ''))
 
 
+# Convert the asteroid map from strings to a 2d boolean list
 def convert_map_to_booleans(m):
 	m = list(map(lambda s: s.strip(), m))
 	return list(map(lambda s: list(map(lambda c: c == '#', s)), m)) 
 
 
+# List positions of the asteroid spaces in the grid
 def asteroids_list(grid):
 	results = []
 	for y in range(len(grid)):
@@ -100,13 +103,16 @@ def create_asteroid_destroy_list(station, grid):
 	for p in passes:
 		p.sort(key=lambda x: aster_angle(station, x))
 
+	print(passes[0][0], passes[0][-1])
 	# Concatenate list of lists
 	return functools.reduce(operator.iconcat, passes, [])
 
 def aster_angle(src, dest):
 	a,b = src
 	x,y = dest
-	return math.atan2(x-a, b-y)
+	
+	# Convert everything to positive numbers to have the right ordering
+	return math.atan2(x-a, b-y) % math.tau
 
 #--------------------------------------------END SOLUTION CODE-------------------------------------------------
 #---------------------------------------------BEGIN TEST CODE--------------------------------------------------
